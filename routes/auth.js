@@ -4,55 +4,51 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
-// ✅ Register new user
+// =========================
+// REGISTER
+// =========================
 router.post("/register", async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
 
-    // Basic validation
     if (!name || !email || !password || !role) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    // Validate role
-    if (!["user", "agent", "admin"].includes(role)) {
-      return res.status(400).json({ message: "Invalid role selected" });
+    let user = await User.findOne({ email });
+    if (user) {
+      return res.status(400).json({ message: "Email already exists" });
     }
 
-    // Check if email already exists
-    const existing = await User.findOne({ email });
-    if (existing) {
-      return res.status(400).json({ message: "Email already registered" });
-    }
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Hash password
-    const salt = await bcrypt.genSalt(10);
-    const hashed = await bcrypt.hash(password, salt);
-
-    // Create user
-    const user = new User({
+    user = new User({
       name,
       email,
-      password: hashed,
+      password: hashedPassword,
       role,
     });
 
     await user.save();
-    res.json({ message: "Registration successful" });
+
+    res.status(201).json({ message: "User registered successfully" });
+
   } catch (err) {
-    console.error("Registration error:", err);
+    console.error("Register error:", err);
     res.status(500).json({ message: "Server error during registration" });
   }
 });
 
-// ✅ Login user
+
+// =========================
+// LOGIN
+// =========================
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Basic validation
     if (!email || !password) {
-      return res.status(400).json({ message: "Email and password are required" });
+      return res.status(400).json({ message: "Email and password required" });
     }
 
     const user = await User.findOne({ email });
@@ -60,22 +56,15 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ message: "Invalid email or password" });
     }
 
-    // Check password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
 
-    // ✅ Include role and name in JWT payload
     const token = jwt.sign(
-      {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
+      { id: user._id, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRES_IN || "7d" }
+      { expiresIn: "7d" }
     );
 
     res.json({
@@ -86,8 +75,9 @@ router.post("/login", async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
-      },
+      }
     });
+
   } catch (err) {
     console.error("Login error:", err);
     res.status(500).json({ message: "Server error during login" });
@@ -95,4 +85,3 @@ router.post("/login", async (req, res) => {
 });
 
 module.exports = router;
-
