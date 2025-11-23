@@ -5,26 +5,26 @@ const morgan = require('morgan');
 const connectDB = require('./config/db');
 
 const app = express();
-app.use(cors());
 connectDB();
 
-// Restrict CORS to the deployed frontend (Vercel) and local dev (Vite)
+// ✅ Correct allowed frontend origins
 const allowedOrigins = [
-	'https://helpdeskcrm-service.vercel.app',
-	'http://localhost:5173',
-	'https://helpdesk-frontend-rho.vercel.app',
-
+  'http://localhost:5173',
+  'https://helpdesk-frontend-rho.vercel.app'  // your real frontend
 ];
+
+// ✅ Correct CORS middleware (only one!)
 app.use(cors({
-	origin: function (origin, callback) {
-		// allow requests with no origin (like curl, Postman, or server-to-server)
-		if (!origin) return callback(null, true);
-		if (allowedOrigins.indexOf(origin) !== -1) {
-			return callback(null, true);
-		}
-		return callback(new Error('CORS policy: This origin is not allowed'));
-	}
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true); // allow Postman/cURL
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error('CORS policy: This origin is not allowed'));
+  },
+  credentials: true
 }));
+
 app.use(morgan('dev'));
 app.use(express.json());
 
