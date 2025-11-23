@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Shared API client used in browser contexts. This is set to your Render URL.
-const BACKEND_BASE_URL = 'https://helpdeskcrm-service.onrender.com';
+const BACKEND_BASE_URL = 'https://helpdesk-backend-90tl.onrender.com';
 
 const base = `${BACKEND_BASE_URL}/api`;
 
