@@ -1,0 +1,59 @@
+/* Light Mode */
+body[data-theme="light"] {
+  --bg-color: #f4f7fa;
+  --text-color: #222;
+  --card-bg: white;
+  --card-border: #ddd;
+  --input-bg: white;
+  --input-text: #222;
+  --navbar-bg: white;
+  --navbar-text: #333;
+}
+
+/* Dark Mode */
+body[data-theme="dark"] {
+  --bg-color: #0d1117;
+  --text-color: #e2e2e2;
+  --card-bg: #161b22;
+  --card-border: #30363d;
+  --input-bg: #21262d;
+  --input-text: #fafafa;
+  --navbar-bg: #161b22;
+  --navbar-text: #fff;
+}
+
+/* Apply Variables Globally */
+body {
+  background: var(--bg-color);
+  color: var(--text-color);
+  transition: 0.3s ease all;
+}
+
+.card,
+.auth-card,
+.agent-card,
+.summary-card {
+  background: var(--card-bg) !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--card-border) !important;
+}
+
+input,
+select,
+textarea {
+  background: var(--input-bg) !important;
+  color: var(--input-text) !important;
+}
+
+.navbar {
+  background: var(--navbar-bg) !important;
+  color: var(--navbar-text) !important;
+}
+
+.table {
+  color: var(--text-color) !important;
+}
+
+.table thead {
+  background: var(--card-bg) !important;
+}

@@ -1,0 +1,133 @@
+/* Full screen container */
+.auth-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+  /* Modern Multi-gradient Background */
+  background: linear-gradient(135deg, #005bea, #00c6fb);
+  background-size: cover;
+  position: relative;
+  overflow: hidden;
+  font-family: "Poppins", sans-serif !important;
+}
+
+/* Floating blur circles (premium effect) */
+.auth-page::before,
+.auth-page::after {
+  content: "";
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  filter: blur(80px);
+}
+
+.auth-page::before {
+  top: 8%;
+  left: 12%;
+}
+
+.auth-page::after {
+  bottom: 10%;
+  right: 10%;
+}
+
+/* Glassmorphism card */
+.auth-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  width: 100%;
+  max-width: 420px;
+  padding: 2.3rem;
+  border-radius: 20px;
+
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+
+  animation: slideUp 0.6s ease;
+  z-index: 5;
+}
+
+/* Title Styling */
+.auth-card h3 {
+  font-size: 27px;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.auth-card p.subtitle {
+  text-align: center;
+  color: #e9e9e9;
+  margin-top: -5px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+/* Inputs */
+.auth-card input,
+.auth-card select {
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 14px;
+  border: none;
+  background: rgba(255, 255, 255, 0.75);
+  font-size: 15px;
+}
+
+.auth-card input:focus,
+.auth-card select:focus {
+  outline: none;
+  box-shadow: 0 0 8px rgba(50, 115, 255, 0.7);
+}
+
+/* Button */
+.auth-card button {
+  width: 100%;
+  background: linear-gradient(90deg, #0061ff, #60efff);
+  padding: 12px;
+  margin-top: 10px;
+
+  font-weight: 600;
+  border-radius: 12px;
+  color: #fff;
+  border: none;
+  font-size: 15px;
+
+  transition: 0.3s ease-in-out;
+}
+
+.auth-card button:hover {
+  transform: scale(1.04);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+}
+
+/* Link style */
+.auth-card a {
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.auth-card a:hover {
+  text-decoration: underline;
+}
+
+/* Animation */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
