@@ -13,9 +13,9 @@ exports.register = async (req, res) => {
     let user = await User.findOne({ email });
     if (user) return res.status(400).json({ message: "Email already exists" });
 
-    const hashed = await bcrypt.hash(password, 10);
+    //const hashed = await bcrypt.hash(password, 10);
 
-    user = new User({ name, email, password: hashed, role });
+    user = new User({ name, email, password, role });
     await user.save();
 
     return res.status(201).json({ message: "Registered successfully" });
@@ -38,9 +38,9 @@ exports.login = async (req, res) => {
     if (!user)
       return res.status(400).json({ message: "User not found" });
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = password === user.password ? true : false;
     if (!isMatch)
-      return res.status(400).json({ message: "Invalid password" });
+      return res.status(400).json({ message: "Invalid password ......" });
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
