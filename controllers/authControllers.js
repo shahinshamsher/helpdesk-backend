@@ -2,11 +2,10 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
-// Controller version (if your routes use controller functions)
+// REGISTER
 exports.register = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
-
     if (!name || !email || !password || !role) {
       return res.status(400).json({ message: "All fields required" });
     }
@@ -19,14 +18,15 @@ exports.register = async (req, res) => {
     user = new User({ name, email, password: hashed, role });
     await user.save();
 
-    res.status(201).json({ message: "Registered successfully" });
+    return res.status(201).json({ message: "Registered successfully" });
 
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    console.error("Register error:", err);
+    return res.status(500).json({ message: "Server error" });
   }
 };
 
+// LOGIN
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -48,10 +48,19 @@ exports.login = async (req, res) => {
       { expiresIn: "7d" }
     );
 
-    res.json({ message: "Login successful", token });
+    return res.json({
+      message: "Login successful",
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
 
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    console.error("Login error:", err);
+    return res.status(500).json({ message: "Server error" });
   }
 };
