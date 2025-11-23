@@ -12,7 +12,7 @@ connectDB();
 const allowedOrigins = [
 	'https://helpdeskcrm-service.vercel.app',
 	'http://localhost:5173',
-	'https://helpdesk-backend-90tl.onrender.com'
+	'https://helpdesk-frontend-rho.vercel.app',
 ];
 app.use(cors({
 	origin: function (origin, callback) {
